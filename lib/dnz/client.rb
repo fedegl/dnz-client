@@ -208,7 +208,7 @@ module DNZ
     end
 
     def oauth_consumer
-      @oauth_consumer ||= OAuth::Consumer.new(options[:oauth_key], options[:oauth_secret], :site => base_url)
+      @oauth_consumer ||= OAuth::Consumer.new(options[:oauth_token], options[:oauth_secret], :site => base_url)
     end
 
     private

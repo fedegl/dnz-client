@@ -62,9 +62,17 @@ describe User do
         @user.stub!(:request_token).and_return(@request_token)
       end
 
-      it 'should get the access token from the request token' do
-        @request_token.should_receive(:get_access_token).and_return(@access_token)
-        @user.access_token.should == @access_token
+      context 'oauth_verifier available' do
+        it 'should get the access token from the request token' do
+          @user = User.new(:oauth_verifier => 'abc')
+          @user.stub!(:request_token).and_return(@request_token)
+          @request_token.should_receive(:get_access_token).with(:oauth_verifier => 'abc').and_return(@access_token)
+          @user.access_token.should == @access_token
+        end
+      end
+
+      context 'oauth_verifier not available' do
+        it { should be_nil }
       end
     end
   end
