@@ -7,6 +7,7 @@ require 'dnz/search'
 require 'dnz/record'
 require 'dnz/error/invalid_api_key'
 require 'dnz/user'
+require 'dnz/resource'
 
 module DNZ
   # This is a simple client for accessing the digitalnz.org API

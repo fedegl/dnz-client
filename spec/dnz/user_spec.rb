@@ -72,7 +72,11 @@ describe User do
       end
 
       context 'oauth_verifier not available' do
-        it { should be_nil }
+        it 'should get the access toekn from the request token' do
+          @user.stub!(:request_token).and_return(@request_token)
+          @request_token.should_receive(:get_access_token).with().and_return(@access_token)
+          @user.access_token.should == @access_token
+        end
       end
     end
   end
@@ -157,6 +161,34 @@ describe User do
       end
 
       it { should == @client }
+    end
+  end
+
+  describe '#resource' do
+    before do
+      @user = User.new
+      @client.stub!(:api_key).and_return('abc')
+      @mock_response = mock(:response, :body => 'mock body')
+      @access_token = mock(:access_token, :get => @mock_response)
+    end
+    subject { @user.resource }
+
+    context 'not authorized' do
+      before { @user.stub!(:authorized?).and_return(false) }
+      it { should be_nil }
+    end
+
+    context 'authorized' do
+      before { @user.stub!(:authorized?).and_return(true) }
+      before { @user.stub!(:access_token).and_return(@access_token) }
+
+      it { should be_a(DNZ::Resource) }
+
+      it 'should call DNZ::Resource.parse with the results of an access token get' do
+        @access_token.should_receive(:get).with('/user.xml?api_key=abc').and_return(@mock_response)
+        DNZ::Resource.should_receive(:parse).with('mock body')
+        subject
+      end
     end
   end
 end

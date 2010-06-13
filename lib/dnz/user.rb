@@ -50,11 +50,11 @@ module DNZ
       end
 
       if token_options = oauth_options[:request_token]
-        self.request_token = OAuth::RequestToken.new(consumer, token_options[:token], token_options[:secret])
+        self.request_token = OAuth::RequestToken.new(client.oauth_consumer, token_options[:token], token_options[:secret])
       end
 
       if token_options = oauth_options[:access_token]
-        self.access_token = OAuth::AccessToken.new(consumer, token_options[:token], token_options[:secret])
+        self.access_token = OAuth::AccessToken.new(client.oauth_consumer, token_options[:token], token_options[:secret])
       end
     end
 
@@ -65,7 +65,7 @@ module DNZ
 
     # Get a request token for the initial OAuth authorization process
     def request_token
-      @request_token ||= consumer.get_request_token
+      @request_token ||= client.oauth_consumer.get_request_token
     end
 
     # Set the request token
@@ -82,7 +82,11 @@ module DNZ
     # will attempt to create one if an oauth verifier is available.
     def access_token
       @access_token ||= begin
-        request_token.get_access_token(:oauth_verifier => oauth_verifier) if oauth_verifier
+        if oauth_options[:oauth_verifier]
+          request_token.get_access_token(:oauth_verifier => oauth_options[:oauth_verifier])
+        else
+          request_token.get_access_token
+        end
       end
     end
 
@@ -108,17 +112,28 @@ module DNZ
     rescue Exception => e
       false
     end
-  end
 
-  private
+    def resource
+      @resource ||= begin
+        if authorized?
+          DNZ::Resource.parse(get('/user.xml').body)
+        end
+      end
+    end
 
-  # The OAuth consumer from the client
-  def consumer
-    client.oauth_consumer
-  end
+    def method_missing(method, *args, &block)
+      if authorized?
+        resource.send(method, *args, &block)
+      else
+        super
+      end
+    end
 
-  # The OAuth verifier passed in the options
-  def oauth_verifier
-    oauth_options[:oauth_verifier]
+    private
+
+    def get(url, options = {})
+      options = {:api_key => client.api_key}.merge(options)
+      access_token.get('%s?%s' % [url, options.to_query])
+    end
   end
 end
