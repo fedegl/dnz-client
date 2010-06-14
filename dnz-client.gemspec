@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dnz-client}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Wells", "Paul Flewelling"]
-  s.date = %q{2010-06-11}
+  s.date = %q{2010-06-14}
   s.description = %q{Ruby library for accessing Digital New Zealand's search API (digitalnz.org)}
   s.email = %q{jeremy@boost.co.nz}
   s.extra_rdoc_files = [
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "lib/dnz/memoizable.rb",
      "lib/dnz/namespace_array.rb",
      "lib/dnz/record.rb",
+     "lib/dnz/resource.rb",
      "lib/dnz/result.rb",
      "lib/dnz/results.rb",
      "lib/dnz/search.rb",
@@ -43,6 +44,7 @@ Gem::Specification.new do |s|
      "spec/dnz/facet_array_spec.rb",
      "spec/dnz/facet_spec.rb",
      "spec/dnz/record_spec.rb",
+     "spec/dnz/resource_spec.rb",
      "spec/dnz/result_spec.rb",
      "spec/dnz/results_spec.rb",
      "spec/dnz/search_spec.rb",
@@ -62,6 +64,7 @@ Gem::Specification.new do |s|
      "spec/dnz/facet_array_spec.rb",
      "spec/dnz/facet_spec.rb",
      "spec/dnz/record_spec.rb",
+     "spec/dnz/resource_spec.rb",
      "spec/dnz/result_spec.rb",
      "spec/dnz/results_spec.rb",
      "spec/dnz/search_spec.rb",

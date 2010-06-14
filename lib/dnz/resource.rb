@@ -1,5 +1,5 @@
 module DNZ
-  class Resource
+  class Resource < BlankSlate
     class << self
       def parse(xml)
         self.new(Nokogiri.XML(xml))
