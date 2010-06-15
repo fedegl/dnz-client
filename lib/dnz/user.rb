@@ -123,7 +123,7 @@ module DNZ
 
     def method_missing(method, *args, &block)
       if authorized?
-        resource.send(method, *args, &block)
+        resource.__send__(method, *args, &block)
       else
         super
       end
