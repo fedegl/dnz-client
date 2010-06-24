@@ -51,6 +51,7 @@ module DNZ
       end
     end
 
+    # Fetch the availability information from the API
     def availability
       @availability ||= begin
         xml = @client.fetch(:record_availability, :id => self.id)
