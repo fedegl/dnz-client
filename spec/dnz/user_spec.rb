@@ -168,7 +168,7 @@ describe User do
     before do
       @user = User.new
       @client.stub!(:api_key).and_return('abc')
-      @mock_response = mock(:response, :body => 'mock body')
+      @mock_response = mock(:response, :body => '<xml>mock body</xml>')
       @access_token = mock(:access_token, :get => @mock_response)
     end
     subject { @user.resource }
@@ -182,11 +182,9 @@ describe User do
       before { @user.stub!(:authorized?).and_return(true) }
       before { @user.stub!(:access_token).and_return(@access_token) }
 
-      it { should be_a(DNZ::Resource) }
-
       it 'should call DNZ::Resource.parse with the results of an access token get' do
         @access_token.should_receive(:get).with('/user.xml?api_key=abc').and_return(@mock_response)
-        DNZ::Resource.should_receive(:parse).with('mock body')
+        DNZ::Resource.should_receive(:parse).with('<xml>mock body</xml>')
         subject
       end
     end

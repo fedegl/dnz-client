@@ -88,6 +88,10 @@ describe Record do
     subject { @record.id }
     it { should == 123 }
   end
+
+  describe '#availability' do
+    
+  end
 end
 
 
