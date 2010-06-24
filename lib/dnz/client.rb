@@ -44,7 +44,8 @@ module DNZ
       :search => 'records/${version}.xml/',
       :custom_search => 'custom_searches/${version}/${custom_search}.xml',
       :custom_search_preview => 'custom_searches/${version}/test.xml',
-      :record => 'records/${version}/${id}.xml'
+      :record => 'records/${version}/${id}.xml',
+      :record_availability => 'records/${version}/${id}/availability.xml'
     }
 
     # API Arguments

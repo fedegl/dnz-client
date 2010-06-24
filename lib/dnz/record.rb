@@ -51,6 +51,20 @@ module DNZ
       end
     end
 
+    def availability
+      @availability ||= begin
+        xml = @client.fetch(:record_availability, :id => self.id)
+        doc = Nokogiri::XML(xml)
+
+        returning({}) do |hash|
+          doc.xpath('//holding').each do |xdata|
+            holding = xdata.xpath('name').text
+            hash[holding] = xdata.xpath('available').text == 'true'
+          end
+        end
+      end
+    end
+
     private
 
     # Return a Nokogiri document for the XML
