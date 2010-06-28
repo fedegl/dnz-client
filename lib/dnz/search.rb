@@ -20,6 +20,22 @@ module DNZ
   class Search
     extend DNZ::Memoizable
 
+    def self.available_facets
+      [
+              :creator,
+              :placename,
+              :year,
+              :decade,
+              :century,
+              :language,
+              :content_partner,
+              :rights,
+              :collection,
+              :isPartOf,
+              :is_catalog_record
+      ]
+    end
+
     # Constructor for Search class. Do not call this directly, instead use the <tt>Client.search</tt> method.
     def initialize(client, search_options)
       @client = client
