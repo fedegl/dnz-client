@@ -32,6 +32,24 @@ describe Search do
     @client.stub!(:fetch).and_return(@xml)
   end
 
+  describe '::available_facets' do
+    it 'should return the facet list' do
+      Search.available_facets.should == [
+              :creator,
+              :placename,
+              :year,
+              :decade,
+              :century,
+              :language,
+              :content_partner,
+              :rights,
+              :collection,
+              :isPartOf,
+              :is_catalog_record
+      ]
+    end
+  end
+
   describe 'Search.new' do
     it 'should call @client.fetch' do
       @client.should_receive(:fetch).with(:search, :search_text => 'test', :facets => "").and_return(@xml)

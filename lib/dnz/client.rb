@@ -6,6 +6,8 @@ require 'dnz/custom_search'
 require 'dnz/search'
 require 'dnz/record'
 require 'dnz/error/invalid_api_key'
+require 'dnz/user'
+require 'dnz/resource'
 
 module DNZ
   # This is a simple client for accessing the digitalnz.org API
@@ -35,12 +37,15 @@ module DNZ
     # The version of the API to use (defaults to v1)
     attr_reader :version
 
+    attr_reader :options
+
     # API URLS
     APIS = {
       :search => 'records/${version}.xml/',
       :custom_search => 'custom_searches/${version}/${custom_search}.xml',
       :custom_search_preview => 'custom_searches/${version}/test.xml',
-      :record => 'records/${version}/${id}.xml'
+      :record => 'records/${version}/${id}.xml',
+      :record_availability => 'records/${version}/${id}/availability.xml'
     }
 
     # API Arguments
@@ -111,11 +116,12 @@ module DNZ
     #   search.results.each do |result|
     #     puts result.title
     #   end
-    def initialize(api_key, version = 'v1', base_url = 'http://api.digitalnz.org')
+    def initialize(api_key, options = {})
+      @version = options.delete(:version) || "v1"
+      @base_url = options.delete(:base_url) || options.delete(:url) || "http://api.digitalnz.org"
       @api_key = api_key
-      @base_url = base_url
-      @version = version
-      
+      @options = options
+
       if @base_url =~ /^(.*)\/$/
         @base_url = $1
       end
@@ -201,6 +207,10 @@ module DNZ
           raise
         end
       end
+    end
+
+    def oauth_consumer
+      @oauth_consumer ||= OAuth::Consumer.new(options[:oauth_token], options[:oauth_secret], :site => base_url)
     end
 
     private

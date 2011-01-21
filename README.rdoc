@@ -1,6 +1,9 @@
 = DigitalNZ Client Library
 
+Ruby client library for using the DigitalNZ (http://www.digitalnz.org) API.
+
 * http://github.com/boost/dnz-client
+* http://www.digitalnz.org
 
 == SYNOPSIS:
 

@@ -4,13 +4,32 @@ require 'dnz/namespace_array'
 
 module DNZ
   # This class is for fetching record metadata from DigitalNZ.
+  #
+  # Example:
+  #
+  #   DNZ::Client.connect('xxx', 'v2')
+  #   search = DNZ::Client.search('Kahikatea')
+  #   id = search.results.first.id
+  #   record = DNZ::Record.find(id)
+  #   puts record.dc.title.text => "Kahikatea Kainga"
+  #
+  # The record's namespaces can be enumerated:
+  #
+  #   record.namespaces => ['dc', 'dnz']
+  #
+  # And each attribute can be enumerated:
+  #
+  #   record.dc.names => ['title', 'identifier', ...]
+  #
   class Record
+    # Find a record by ID using the default client connection (see Client::connect).
     def self.find(id)
       self.new(Client.connection, id)
     end
 
     attr_reader :id
 
+    # Find a record by ID using the specified Client.
     def initialize(client, id)
       @client = client
       @id = id
@@ -29,6 +48,21 @@ module DNZ
         attribute.to_s
       else
         @data.send(method, * args, & block)
+      end
+    end
+
+    # Fetch the availability information from the API
+    def availability
+      @availability ||= begin
+        xml = @client.fetch(:record_availability, :id => self.id)
+        doc = Nokogiri::XML(xml)
+
+        returning({}) do |hash|
+          doc.xpath('//holding').each do |xdata|
+            holding = xdata.xpath('name').text
+            hash[holding] = xdata.xpath('available').text == 'true'
+          end
+        end
       end
     end
 

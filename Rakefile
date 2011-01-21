@@ -1,25 +1,23 @@
 require 'rubygems'
-gem 'hoe', '>= 2.1.0'
-require 'hoe'
-require 'fileutils'
 require './lib/dnz'
 
-Hoe.plugin :newgem
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "dnz-client"
+    gemspec.summary = "Ruby library for accessing Digital New Zealand's search API (digitalnz.org)"
+    gemspec.description = "Ruby library for accessing Digital New Zealand's search API (digitalnz.org)"
+    gemspec.email = "jeremy@boost.co.nz"
+    gemspec.homepage = "http://github.com/boost/dnz-client"
+    gemspec.authors = ["Jeremy Wells", "Paul Flewelling"]
+    gemspec.extra_rdoc_files << 'README.rdoc'
 
-# Generate all the Rake tasks
-# Run 'rake -T' to see list of generated tasks (from gem root directory)
-$hoe = Hoe.spec 'dnz-client' do
-  self.developer 'Jeremy Wells', 'jeremy@boost.co.nz'
-  self.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
-  self.description = "Ruby library for accessing Digital New Zealand's search API (digitalnz.org)"
-  #self.rubyforge_name       = self.name # TODO this is default value
-  self.extra_deps         = [['activesupport','>= 2.0.2'], ['nokogiri', '>= 1.2.3']]
-  self.extra_rdoc_files   << 'README.rdoc'
+    gemspec.add_dependency('activesupport', '>= 2.0.2')
+    gemspec.add_dependency('nokogiri', '>= 1.2.3')
+    gemspec.add_dependency('oauth', '>= 0.4.0')
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
 end
 
-require 'newgem/tasks'
 Dir['tasks/**/*.rake'].each { |t| load t }
-
-# TODO - want other tests/tasks run by default? Add them to the list
-# remove_task :default
-# task :default => [:spec, :features]

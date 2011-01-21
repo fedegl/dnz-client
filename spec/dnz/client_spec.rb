@@ -51,7 +51,7 @@ describe Client do
       describe 'v1' do
         before do
           @version = 'v1'
-          @client = Client.new('abc', @version)
+          @client = Client.new('abc', :version => @version)
           @client.stub!(:open) # make sure open is never called
         end
 
@@ -92,7 +92,7 @@ describe Client do
       describe 'v2' do
         before do
           @version = 'v2'
-          @client = Client.new('abc', @version)
+          @client = Client.new('abc', :version => @version)
           @client.stub!(:open) # make sure open is never called
         end
 
@@ -143,7 +143,7 @@ describe Client do
 
       
       it 'should remove the last forward slash from the URL' do
-        @client = Client.new(@api_key, 'v1', @url)
+        @client = Client.new(@api_key, :version => 'v1', :url => @url)
         @client.should_receive(:open).with do |url|
           url.should include('http://example.com/records/v1.xml/?')
         end

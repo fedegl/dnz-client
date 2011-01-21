@@ -87,6 +87,55 @@ describe Record do
       Record.find(123).should == @doc
     end
   end
+
+  describe '#id' do
+    before { @record = Record.new(@client, 123) }
+    subject { @record.id }
+    it { should == 123 }
+  end
+
+  describe '#availability' do
+    before do
+      @record = Record.new(@client, 123)
+      @xml = %Q{<holdings>
+  <holding>
+    <name>National Library of New Zealand, Alexander Turnbull Library, Photos P 015.931 BAG 1969-1985</name>
+    <available>true</available>
+  </holding>
+  <holding>
+    <name>National Library of New Zealand, Alexander Turnbull Library, NewspRR P 015.931 BAG 1969-1985</name>
+    <available>true</available>
+  </holding>
+  <holding>
+    <name>National Library of New Zealand, Alexander Turnbull Library, ChfLib P 015.931 BAG 1969-1985</name>
+    <available>false</available>
+  </holding></holdings>}
+      @client.stub!(:fetch).and_return(StringIO.new(@xml))
+    end
+
+    subject { @record.availability }
+
+    describe 'remote call' do
+      it 'should call client.fetch with :record_availability' do
+        @client.should_receive(:fetch).with(:record_availability, :id => 123).and_return(StringIO.new(@xml))
+        subject
+      end
+
+      it 'should cache the call' do
+        @client.should_receive(:fetch).with(:record_availability, :id => 123).once.and_return(StringIO.new(@xml))
+        @record.availability.object_id.should == @record.availability.object_id
+      end
+
+    end
+
+    describe 'return value' do
+      it { should be_a(Hash) }
+      it { should be_hash_including('National Library of New Zealand, Alexander Turnbull Library, Photos P 015.931 BAG 1969-1985' => true) }
+      it { should be_hash_including('National Library of New Zealand, Alexander Turnbull Library, NewspRR P 015.931 BAG 1969-1985' => true) }
+      it { should be_hash_including('National Library of New Zealand, Alexander Turnbull Library, ChfLib P 015.931 BAG 1969-1985' => false) }
+      its(:size) { should == 3 }
+    end
+  end
 end
 
 
