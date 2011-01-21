@@ -104,7 +104,11 @@ module DNZ
           # OR together multiple values for the same filter
           '(' + v.map { |i| '%s:"%s"' % [k, i] }.join(' OR ') + ')'
         else
-          '%s:"%s"' % [k, v]
+          if v =~ /^\[.+\]$/
+            '%s:%s' % [k, v]
+          else
+            '%s:"%s"' % [k, v]
+          end
         end
       end
     end

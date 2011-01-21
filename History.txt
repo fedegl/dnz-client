@@ -1,3 +1,16 @@
+=== 0.2.7 2011-01-21
+
+* When parsing the filters into a search string don't add quotes to the value if the value starts and end with square brackets.
+This allows to pass options that solar search allows, for example:
+
+  :filter => {:object_url => "[* TO *]"}
+
+before it would return:
+  
+  object_url:"[* TO *]" and now it returns object_url:[* TO *]
+  
+which returns results that have a object_url.
+
 === 0.1.4 2010-05-26
 
 * Record objects now expose their ID:
