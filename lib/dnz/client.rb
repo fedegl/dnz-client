@@ -82,7 +82,8 @@ module DNZ
           :direction,
           :facets,
           :facet_num_results,
-          :facet_start
+          :facet_start,
+          :record_type
         ]),
         :custom_search => Set.new([
           :custom_search,
@@ -94,7 +95,8 @@ module DNZ
           :direction,
           :facets,
           :facet_num_results,
-          :facet_start
+          :facet_start,
+          :record_type
         ]),
         :custom_search_preview => Set.new([
           :api_key
@@ -104,7 +106,7 @@ module DNZ
 
     # List of available facets that can be passed to search
     FACETS = [
-      :category, :content_partner, :creator, :language, :rights, :century, :decade, :year
+      :category, :content_partner, :creator, :language, :rights, :century, :decade, :year, :heading_type
     ]
 
     # Constructor method for the Client class. An API key must be provided.

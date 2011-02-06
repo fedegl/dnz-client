@@ -32,7 +32,8 @@ module DNZ
               :rights,
               :collection,
               :isPartOf,
-              :is_catalog_record
+              :is_catalog_record,
+              :heading_type
       ]
     end
 
