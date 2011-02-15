@@ -1,0 +1,36 @@
+PATH
+  remote: .
+  specs:
+    dnz-client (0.3.0)
+      activesupport (>= 3.0.0)
+      i18n (>= 0.4.0)
+      nokogiri (>= 1.2.3)
+      oauth (>= 0.4.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activesupport (3.0.4)
+    diff-lcs (1.1.2)
+    i18n (0.5.0)
+    nokogiri (1.4.4)
+    oauth (0.4.4)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.1)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activesupport (>= 3.0.0)
+  dnz-client!
+  i18n (>= 0.4.0)
+  nokogiri (>= 1.2.3)
+  oauth (>= 0.4.0)
+  rspec (>= 2.5.0)

@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'open-uri'
 require 'set'
-require 'active_support'
+require 'active_support/core_ext'
 require 'dnz/custom_search'
 require 'dnz/search'
 require 'dnz/record'
